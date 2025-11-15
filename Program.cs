@@ -1,192 +1,200 @@
-﻿//Name of student: Yohana Montero
-//Registration: 2025-0939
-// Day of the class: Friday 
-
+﻿// Name of Student: Yohana Montero
+// Registration: 2025-0939
+// Day of class: Friday
 
 using System;
 using System.Collections.Generic;
 
-public class Contact
+public class Patient
 {
     public int Id { get; set; }
     public string FullName { get; set; }
-    public string Phone { get; set; }
-    public string Email { get; set; }
-    public string Address { get; set; }
+    public int Age { get; set; }
+    public string Condition { get; set; }
+    public string Doctor { get; set; }
 
-    public Contact(int id, string fullName, string phone, string email, string address)
+    public Patient(int id, string fullName, int age, string condition, string doctor)
     {
         Id = id;
         FullName = fullName;
-        Phone = phone;
-        Email = email;
-        Address = address;
+        Age = age;
+        Condition = condition;
+        Doctor = doctor;
     }
 }
 
-public class ContactManager
+public class PatientManager
 {
-    private List<Contact> contacts = new List<Contact>();
+    private List<Patient> patients = new List<Patient>();
 
-    public void AddContact()
+    // Add Patient
+    public void AddPatient()
     {
-        Console.WriteLine("\nLet's add a new contact.");
+        Console.WriteLine("\n--- Add New Patient ---");
 
-        int id = contacts.Count + 1;
+        int id = patients.Count + 1;
 
-        Console.Write("Enter Name: ");
+        Console.Write("Enter full name: ");
         string name = Console.ReadLine();
 
-        Console.Write("Enter Phone: ");
-        string phone = Console.ReadLine();
+        Console.Write("Enter age: ");
+        int age = Convert.ToInt32(Console.ReadLine());
 
-        Console.Write("Enter Email: ");
-        string email = Console.ReadLine();
+        Console.Write("Enter condition (diagnosis): ");
+        string condition = Console.ReadLine();
 
-        Console.Write("Enter Address: ");
-        string address = Console.ReadLine();
+        Console.Write("Enter doctor in charge: ");
+        string doctor = Console.ReadLine();
 
-        contacts.Add(new Contact(id, name, phone, email, address));
+        patients.Add(new Patient(id, name, age, condition, doctor));
 
-        Console.WriteLine("\nContact successfully added!\n");
+        Console.WriteLine("\nPatient successfully added!\n");
     }
 
-    public void ViewContacts()
+    // View all patients
+    public void ViewPatients()
     {
-        Console.WriteLine("\nID     Name          Phone          Email          Address");
-        Console.WriteLine("--------------------------------------------------------------");
+        Console.WriteLine("\nID   Name              Age   Condition             Doctor");
+        Console.WriteLine("---------------------------------------------------------------");
 
-        foreach (var c in contacts)
+        foreach (var p in patients)
         {
-            Console.WriteLine($"{c.Id}    {c.FullName}    {c.Phone}    {c.Email}    {c.Address}");
+            Console.WriteLine($"{p.Id}    {p.FullName}     {p.Age}    {p.Condition}       {p.Doctor}");
         }
         Console.WriteLine();
     }
 
-    public void SearchContact()
+    // Search patient by ID
+    public void SearchPatient()
     {
-        ViewContacts();
+        ViewPatients();
+
         Console.Write("Enter ID to search: ");
         int id = Convert.ToInt32(Console.ReadLine());
 
-        Contact found = contacts.Find(c => c.Id == id);
+        Patient found = patients.Find(p => p.Id == id);
 
         if (found == null)
         {
-            Console.WriteLine("\nContact not found.\n");
+            Console.WriteLine("\nPatient not found.\n");
             return;
         }
 
         Console.WriteLine($"\nName: {found.FullName}");
-        Console.WriteLine($"Phone: {found.Phone}");
-        Console.WriteLine($"Email: {found.Email}");
-        Console.WriteLine($"Address: {found.Address}\n");
+        Console.WriteLine($"Age: {found.Age}");
+        Console.WriteLine($"Condition: {found.Condition}");
+        Console.WriteLine($"Doctor: {found.Doctor}\n");
     }
 
-    public void EditContact()
+    // Edit patient data
+    public void EditPatient()
     {
-        ViewContacts();
+        ViewPatients();
         Console.Write("Enter ID to edit: ");
         int id = Convert.ToInt32(Console.ReadLine());
 
-        Contact found = contacts.Find(c => c.Id == id);
+        Patient found = patients.Find(p => p.Id == id);
 
         if (found == null)
         {
-            Console.WriteLine("\nContact not found.\n");
+            Console.WriteLine("\nPatient not found.\n");
             return;
         }
 
-        Console.WriteLine("\nLeave empty to keep current value.\n");
+        Console.WriteLine("\nLeave blank to keep the current value.\n");
 
         Console.Write($"Current Name ({found.FullName}): ");
         string newName = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(newName)) found.FullName = newName;
 
-        Console.Write($"Current Phone ({found.Phone}): ");
-        string newPhone = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(newPhone)) found.Phone = newPhone;
+        Console.Write($"Current Age ({found.Age}): ");
+        string newAgeStr = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newAgeStr)) found.Age = Convert.ToInt32(newAgeStr);
 
-        Console.Write($"Current Email ({found.Email}): ");
-        string newEmail = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(newEmail)) found.Email = newEmail;
+        Console.Write($"Current Condition ({found.Condition}): ");
+        string newCondition = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newCondition)) found.Condition = newCondition;
 
-        Console.Write($"Current Address ({found.Address}): ");
-        string newAddress = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(newAddress)) found.Address = newAddress;
+        Console.Write($"Current Doctor ({found.Doctor}): ");
+        string newDoctor = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(newDoctor)) found.Doctor = newDoctor;
 
-        Console.WriteLine("\nContact successfully updated!\n");
+        Console.WriteLine("\nPatient updated successfully!\n");
     }
 
-    public void DeleteContact()
+    // Delete patient
+    public void DeletePatient()
     {
-        ViewContacts();
+        ViewPatients();
         Console.Write("Enter ID to delete: ");
         int id = Convert.ToInt32(Console.ReadLine());
 
-        Contact found = contacts.Find(c => c.Id == id);
+        Patient found = patients.Find(p => p.Id == id);
 
         if (found == null)
         {
-            Console.WriteLine("\nContact not found.\n");
+            Console.WriteLine("\nPatient not found.\n");
             return;
         }
 
-        Console.WriteLine("Are you sure? 1 = Yes, 2 = No");
-        int option = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Are you sure? (1 = Yes, 2 = No)");
+        int confirm = Convert.ToInt32(Console.ReadLine());
 
-        if (option == 1)
+        if (confirm == 1)
         {
-            contacts.Remove(found);
-            Console.WriteLine("\nContact removed!\n");
+            patients.Remove(found);
+            Console.WriteLine("\nPatient removed successfully!\n");
+        }
+        else
+        {
+            Console.WriteLine("\nDeletion canceled.\n");
         }
     }
 }
 
-
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        ContactManager manager = new ContactManager();
+        PatientManager manager = new PatientManager();
         bool running = true;
 
         while (running)
         {
-            Console.WriteLine("\n===== CONTACT MENU =====");
-            Console.WriteLine("1. Add Contact");
-            Console.WriteLine("2. View Contacts");
-            Console.WriteLine("3. Search Contact");
-            Console.WriteLine("4. Edit Contact");
-            Console.WriteLine("5. Delete Contact");
+            Console.WriteLine("\n===== PATIENT REGISTRY MENU =====");
+            Console.WriteLine("1. Add Patient");
+            Console.WriteLine("2. View All Patients");
+            Console.WriteLine("3. Search Patient");
+            Console.WriteLine("4. Edit Patient");
+            Console.WriteLine("5. Delete Patient");
             Console.WriteLine("6. Exit");
             Console.WriteLine("=================================");
             Console.Write("Choose an option: ");
 
-            int choice = Convert.ToInt32(Console.ReadLine());
+            int option = Convert.ToInt32(Console.ReadLine());
 
-            switch (choice)
+            switch (option)
             {
                 case 1:
-                    manager.AddContact();
+                    manager.AddPatient();
                     break;
                 case 2:
-                    manager.ViewContacts();
+                    manager.ViewPatients();
                     break;
                 case 3:
-                    manager.SearchContact();
+                    manager.SearchPatient();
                     break;
                 case 4:
-                    manager.EditContact();
+                    manager.EditPatient();
                     break;
                 case 5:
-                    manager.DeleteContact();
+                    manager.DeletePatient();
                     break;
                 case 6:
                     running = false;
                     break;
                 default:
-                    Console.WriteLine("Invalid option.");
+                    Console.WriteLine("Invalid option.\n");
                     break;
             }
         }
